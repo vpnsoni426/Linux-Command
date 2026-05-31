@@ -1,0 +1,416 @@
+linux command 
+mkdir vip  # folder create
+ cd vip/
+cd  ..
+2 dot (2 step)   
+pwd (present working directory) /home/ubuntu/vip
+cd .. 
+ sudo -i (become a root user)
+cd /   (root directory) doenot matter which location you are in just cd / to jumped in root 
+cd home/ (inside home all user will be there
+ cd ~ 
+whoami (current user)
+lsb_release -a (which version discription) lts (long term support) if lts not there that means updation will be there 
+
+touch file1.txt file2.txt (2 files will be created )
+touch file{3..15}.txt (that means you have created file from file3.txt to file 15.txt 13 file will be created)
+sudo (super user do)
+sudo useradd devops
+sudo useradd -m devops (means usercreate with folder )
+
+sudo passwd devops
+ cd /home
+ls (output devops ubuntu)
+cd devops (permission denied
+su devops (switch user)   (give permission to user)
+cd /home/
+
+
+cp source destination (cp means copy from source to destination)
+cp file1.txt vip
+cp file* (means whatever has after file )
+mv file2.txt vip (move file to vip)
+ls -a (hidden file will be visible)  
+ls -l (display file and direcory)
+-----------------------------------------------------------------------------------
+Add something to file
+echo "hello my name is vipin" > file1.txt
+echo "hello devops " | file9.txt  (add text to file and print on screen)
+vi file1.txt (open file to write some thing
+i (insert mode)
+esc (come out from insert mode)
+:wq (write to file and quit)
+cat file9.txt (read data from file)
+:qa! (quite forcefully) 
+:q! quit withot save
+rm file2.txt (remove file )
+rm -r vip (-r recursivily means whatever indise vip folder delete everything with folder also)
+man (any command) it will display and guide you
+man useradd
+chmod 744 file4.txt (owner permission 7-> read| write | execute) 4 means read group 4 means other read permission)
+chmod 700 file.txt (only owner read write execute)
+----------------------------------------------------
+permission chart (owner | group | other
+rwx =7
+rw- =6
+r-x =5
+r-- =4
+-wx =3
+-w- =2
+--x =1
+--- -0
+--------------------------------------------------
+group is a collection of user account
+cat /etc/passwd ( i want to know how many user availabel in my ubuntu machine)
+cd /home and ls (it will display how many group are there 
+sudo groupadd group1 (it will create one group)
+sudo cat /etc/group ( it will display how many group are there in your machine whenever you create any user at that time same name group also woll be created )
+sudo gpasswd -a devops group1 (to add user in a group)
+gpasswd -M vip, devops group1 (add multipal member on group)
+getent group group1(  check group  member)
+
+  --------------------------------------------------------------------
+sudo useradd -m vipin (user created it ia a system level command )
+sudo passwd vipin (set password)
+sudo adduser vipin (it is best for script command and no need to mention -m it will automatically create folder of the user and it will ask for password creation also) 
+sudo usermod -aG ubuntu vipin (add vipin user to group a= apped or add G meanGroup)
+
+chown [owner]:[group] file (if you want to change owner and group for file or directory 
+sudo chown vipin file1.txt (file owner vipin)
+sudo chown vipin:group1 file.txt (owner vipin and group is group1 changed )
+sudo chown -R vipin:group1 /opt/app (directory and all files change owner)
+chown (change owner | chmod change permission read write execute
+
+sudo chgrp group1 file (change group1 for file )
+sudo chgrp group1 /opt/app  (change group of directory | chgrp it only change the group
+
+sudo gpasswd -d username groupname (remove user from group it just remove user from group not for delete from system)
+sudo groupdel group1 (delete group without removing user you can not delete group )
+sudo usermod -g newgroup username (change usergroup then delete)
+
+sudo userdel vipin ( delete user without removing directory)
+sudo userdel -r vipin ( delete user with directory)
+id vipin (for verify)
+ps -u vipin (check login user process)
+sudo pkill -u vipin 
+w (detailed login user with activity detail)
+who (logged in users)
+ 
+grep ubuntu /etc/passwd (search ubuntu in that location)
+grep -i (uppercase lowecase)
+grep TRACE application.log > app2.log  (first find trace from application file and create new file and store app2 file)
+awk '{print $1,$2,$5}' app.log (print column1, 2 , and 5 from file)
+
+awk /INFO/ app.log (fins info from app.log)
+awk '/INFO/ {print $1.$5}' app.log (we are giving two query 1st find info then print column 1 and 5)
+awk 'NR>=20 && NR <=40 && /INFO/ {print NR,$1,$2)' app.log (No of row grater than 20 and leaas than 40 all row print with column 1 and 5 with info value)
+find ~/ -name app.log (find or search app.log in home /root directory)
+find ~/ -name *. log
+find ~/ -user ubuntu (find ubuntu user anything which has the created by ubuntu)
+find ~/ -group devops
+
+hostnamectl 
+df -h (disk space usage)
+free (memory uses)
+uptime (system uptime and load)
+who
+w
+ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6
+echo -e "\e[1;32mDone. \e[Om"
+
+1. ps
+
+ps कमांड सिस्टम में चल रही processes की जानकारी दिखाती है।
+
+2. -e
+
+सभी users की सभी running processes दिखाता है।
+
+3. -o %mem,%cpu,comm
+
+आउटपुट में केवल ये कॉलम दिखाने के लिए:
+
+%mem → Process कितनी RAM (Memory) उपयोग कर रही है।
+%cpu → Process कितना CPU उपयोग कर रही है।
+comm → Process/command का नाम।
+
+उदाहरण:
+
+%MEM %CPU COMMAND
+12.5  8.3  firefox
+10.2  3.1  chrome
+4. --sort=-%mem
+
+Processes को memory usage के आधार पर descending order (सबसे ज़्यादा memory उपयोग करने वाली पहले) में sort करता है।
+
+5. | (pipe)
+
+पहली कमांड का output दूसरी कमांड को भेजता है।
+
+6. head -n 6
+
+सिर्फ पहली 6 lines दिखाता है।
+
+आमतौर पर इसमें:
+
+1 line header होती है।
+5 सबसे ज़्यादा memory उपयोग करने वाली processes दिखाई जाती हैं।
+
+उदाहरण:
+
+%MEM %CPU COMMAND
+15.2  2.1 chrome
+10.8  1.5 firefox
+8.3   0.7 code
+6.1   0.3 java
+4.5   0.1 python
+दूसरी लाइन
+echo -e "\e[1;32mDone. \e[0m"
+1. echo
+
+टेक्स्ट स्क्रीन पर प्रिंट करता है।
+
+2. -e
+
+Escape sequences (विशेष formatting codes) को enable करता है।
+
+3. \e[1;32m
+
+ANSI color code है:
+
+1 → Bold/Bright text
+32 → Green color
+
+इसके बाद लिखा गया टेक्स्ट हरे रंग में दिखाई देगा।
+
+4. Done.
+
+यह संदेश स्क्रीन पर प्रिंट होगा।
+
+5. \e[0m
+
+सभी text formatting (color, bold आदि) reset कर देता है ताकि आगे का टेक्स्ट सामान्य रंग में दिखे।
+
+पूरा script क्या करता है?
+सिस्टम की processes में से सबसे ज़्यादा RAM उपयोग करने वाली processes दिखाता है।
+उसके बाद हरे रंग में "Done." संदेश प्रिंट करता है।
+
+उदाहरण आउटपुट:
+
+%MEM %CPU COMMAND
+15.2  2.1 chrome
+10.8  1.5 firefox
+8.3   0.7 code
+6.1   0.3 java
+4.5   0.1 python
+
+Done.
+
+जहाँ Done. हरे (green) रंग में दिखाई देगा।
+
+linkdin post linux command 
+mkdir vip  # folder create
+ cd vip/
+cd  ..
+2 dot (2 step)   
+pwd (present working directory) /home/ubuntu/vip
+cd .. 
+ sudo -i (become a root user)
+cd /   (root directory) doenot matter which location you are in just cd / to jumped in root 
+cd home/ (inside home all user will be there
+ cd ~ 
+whoami (current user)
+lsb_release -a (which version discription) lts (long term support) if lts not there that means updation will be there 
+
+touch file1.txt file2.txt (2 files will be created )
+touch file{3..15}.txt (that means you have created file from file3.txt to file 15.txt 13 file will be created)
+sudo (super user do)
+sudo useradd devops
+sudo useradd -m devops (means usercreate with folder )
+
+sudo passwd devops
+ cd /home
+ls (output devops ubuntu)
+cd devops (permission denied
+su devops (switch user)   (give permission to user)
+cd /home/
+
+
+cp source destination (cp means copy from source to destination)
+cp file1.txt vip
+cp file* (means whatever has after file )
+mv file2.txt vip (move file to vip)
+ls -a (hidden file will be visible)  
+ls -l (display file and direcory)
+-----------------------------------------------------------------------------------
+Add something to file
+echo "hello my name is vipin" > file1.txt
+echo "hello devops " | file9.txt  (add text to file and print on screen)
+vi file1.txt (open file to write some thing
+i (insert mode)
+esc (come out from insert mode)
+:wq (write to file and quit)
+cat file9.txt (read data from file)
+:qa! (quite forcefully) 
+:q! quit withot save
+rm file2.txt (remove file )
+rm -r vip (-r recursivily means whatever indise vip folder delete everything with folder also)
+man (any command) it will display and guide you
+man useradd
+chmod 744 file4.txt (owner permission 7-> read| write | execute) 4 means read group 4 means other read permission)
+chmod 700 file.txt (only owner read write execute)
+----------------------------------------------------
+permission chart (owner | group | other
+rwx =7
+rw- =6
+r-x =5
+r-- =4
+-wx =3
+-w- =2
+--x =1
+--- -0
+--------------------------------------------------
+group is a collection of user account
+cat /etc/passwd ( i want to know how many user availabel in my ubuntu machine)
+cd /home and ls (it will display how many group are there 
+sudo groupadd group1 (it will create one group)
+sudo cat /etc/group ( it will display how many group are there in your machine whenever you create any user at that time same name group also woll be created )
+sudo gpasswd -a devops group1 (to add user in a group)
+gpasswd -M vip, devops group1 (add multipal member on group)
+getent group group1(  check group  member)
+
+  --------------------------------------------------------------------
+sudo useradd -m vipin (user created it ia a system level command )
+sudo passwd vipin (set password)
+sudo adduser vipin (it is best for script command and no need to mention -m it will automatically create folder of the user and it will ask for password creation also) 
+sudo usermod -aG ubuntu vipin (add vipin user to group a= apped or add G meanGroup)
+
+chown [owner]:[group] file (if you want to change owner and group for file or directory 
+sudo chown vipin file1.txt (file owner vipin)
+sudo chown vipin:group1 file.txt (owner vipin and group is group1 changed )
+sudo chown -R vipin:group1 /opt/app (directory and all files change owner)
+chown (change owner | chmod change permission read write execute
+
+sudo chgrp group1 file (change group1 for file )
+sudo chgrp group1 /opt/app  (change group of directory | chgrp it only change the group
+
+sudo gpasswd -d username groupname (remove user from group it just remove user from group not for delete from system)
+sudo groupdel group1 (delete group without removing user you can not delete group )
+sudo usermod -g newgroup username (change usergroup then delete)
+
+sudo userdel vipin ( delete user without removing directory)
+sudo userdel -r vipin ( delete user with directory)
+id vipin (for verify)
+ps -u vipin (check login user process)
+sudo pkill -u vipin 
+w (detailed login user with activity detail)
+who (logged in users)
+ 
+grep ubuntu /etc/passwd (search ubuntu in that location)
+grep -i (uppercase lowecase)
+grep TRACE application.log > app2.log  (first find trace from application file and create new file and store app2 file)
+awk '{print $1,$2,$5}' app.log (print column1, 2 , and 5 from file)
+
+awk /INFO/ app.log (fins info from app.log)
+awk '/INFO/ {print $1.$5}' app.log (we are giving two query 1st find info then print column 1 and 5)
+awk 'NR>=20 && NR <=40 && /INFO/ {print NR,$1,$2)' app.log (No of row grater than 20 and leaas than 40 all row print with column 1 and 5 with info value)
+find ~/ -name app.log (find or search app.log in home /root directory)
+find ~/ -name *. log
+find ~/ -user ubuntu (find ubuntu user anything which has the created by ubuntu)
+find ~/ -group devops
+
+hostnamectl 
+df -h (disk space usage)
+free (memory uses)
+uptime (system uptime and load)
+who
+w
+ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6
+echo -e "\e[1;32mDone. \e[Om"
+ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6
+1. ps
+
+ps कमांड सिस्टम में चल रही processes की जानकारी दिखाती है।
+
+2. -e
+
+सभी users की सभी running processes दिखाता है।
+
+3. -o %mem,%cpu,comm
+
+आउटपुट में केवल ये कॉलम दिखाने के लिए:
+
+%mem → Process कितनी RAM (Memory) उपयोग कर रही है।
+%cpu → Process कितना CPU उपयोग कर रही है।
+comm → Process/command का नाम।
+
+उदाहरण:
+
+%MEM %CPU COMMAND
+12.5  8.3  firefox
+10.2  3.1  chrome
+4. --sort=-%mem
+
+Processes को memory usage के आधार पर descending order (सबसे ज़्यादा memory उपयोग करने वाली पहले) में sort करता है।
+
+5. | (pipe)
+
+पहली कमांड का output दूसरी कमांड को भेजता है।
+
+6. head -n 6
+
+सिर्फ पहली 6 lines दिखाता है।
+
+आमतौर पर इसमें:
+
+1 line header होती है।
+5 सबसे ज़्यादा memory उपयोग करने वाली processes दिखाई जाती हैं।
+
+उदाहरण:
+
+%MEM %CPU COMMAND
+15.2  2.1 chrome
+10.8  1.5 firefox
+8.3   0.7 code
+6.1   0.3 java
+4.5   0.1 python
+दूसरी लाइन
+echo -e "\e[1;32mDone. \e[0m"
+1. echo
+
+टेक्स्ट स्क्रीन पर प्रिंट करता है।
+
+2. -e
+
+Escape sequences (विशेष formatting codes) को enable करता है।
+
+3. \e[1;32m
+
+ANSI color code है:
+
+1 → Bold/Bright text
+32 → Green color
+
+इसके बाद लिखा गया टेक्स्ट हरे रंग में दिखाई देगा।
+
+4. Done.
+
+यह संदेश स्क्रीन पर प्रिंट होगा।
+
+5. \e[0m
+
+सभी text formatting (color, bold आदि) reset कर देता है ताकि आगे का टेक्स्ट सामान्य रंग में दिखे।
+
+पूरा script क्या करता है?
+सिस्टम की processes में से सबसे ज़्यादा RAM उपयोग करने वाली processes दिखाता है।
+उसके बाद हरे रंग में "Done." संदेश प्रिंट करता है।
+
+उदाहरण आउटपुट:
+
+%MEM %CPU COMMAND
+15.2  2.1 chrome
+10.8  1.5 firefox
+8.3   0.7 code
+6.1   0.3 java
+4.5   0.1 python
+
