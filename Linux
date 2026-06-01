@@ -106,5 +106,63 @@ awk '/INFO/ {print $1.$5}' app.log (we are giving two query 1st find info then p
 awk 'NR>=20 && NR <=40 && /INFO/ {print NR,$1,$2)' app.log (No of row grater than 20 and leaas than 40 all row print with column 1 and 5 with info value)
 find ~/ -name app.log (find or search app.log in home /root directory)
 find ~/ -name *. log
+
 find ~/ -user ubuntu (find ubuntu user anything which has the created by ubuntu)
 find ~/ -group devops
+df -h (disk space usage) free (memory uses) uptime (system uptime and load) who w ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6 echo -e "\e[1;32mDone. \e[Om" ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6
+
+ps
+ps कमांड सिस्टम में चल रही processes की जानकारी दिखाती है।
+
+-e
+सभी users की सभी running processes दिखाता है।
+
+-o %mem,%cpu,comm
+आउटपुट में केवल ये कॉलम दिखाने के लिए:
+
+%mem → Process कितनी RAM (Memory) उपयोग कर रही है। %cpu → Process कितना CPU उपयोग कर रही है। comm → Process/command का नाम।
+
+उदाहरण:
+
+%MEM %CPU COMMAND 12.5 8.3 firefox 10.2 3.1 chrome 4. --sort=-%mem
+
+Processes को memory usage के आधार पर descending order (सबसे ज़्यादा memory उपयोग करने वाली पहले) में sort करता है।
+
+| (pipe)
+पहली कमांड का output दूसरी कमांड को भेजता है।
+
+head -n 6
+सिर्फ पहली 6 lines दिखाता है।
+
+आमतौर पर इसमें:
+
+1 line header होती है। 5 सबसे ज़्यादा memory उपयोग करने वाली processes दिखाई जाती हैं।
+
+उदाहरण:
+
+%MEM %CPU COMMAND 15.2 2.1 chrome 10.8 1.5 firefox 8.3 0.7 code 6.1 0.3 java 4.5 0.1 python दूसरी लाइन echo -e "\e[1;32mDone. \e[0m"
+
+echo
+टेक्स्ट स्क्रीन पर प्रिंट करता है।
+
+-e
+Escape sequences (विशेष formatting codes) को enable करता है।
+
+\e[1;32m
+ANSI color code है:
+
+1 → Bold/Bright text 32 → Green color
+
+इसके बाद लिखा गया टेक्स्ट हरे रंग में दिखाई देगा।
+
+Done.
+यह संदेश स्क्रीन पर प्रिंट होगा।
+
+\e[0m
+सभी text formatting (color, bold आदि) reset कर देता है ताकि आगे का टेक्स्ट सामान्य रंग में दिखे।
+
+पूरा script क्या करता है? सिस्टम की processes में से सबसे ज़्यादा RAM उपयोग करने वाली processes दिखाता है। उसके बाद हरे रंग में "Done." संदेश प्रिंट करता है।
+
+उदाहरण आउटपुट:
+
+%MEM %CPU COMMAND 15.2 2.1 chrome 10.8 1.5 firefox 8.3 0.7 code 6.1 0.3 java 4.5 0.1 python
