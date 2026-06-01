@@ -115,6 +115,7 @@ free (memory uses)
 uptime (system uptime and load) 
 who 
 w 
+hostnamectl
 ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6 echo -e "\e[1;32mDone. \e[Om" ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6
 
 ps
