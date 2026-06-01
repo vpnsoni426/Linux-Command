@@ -109,7 +109,13 @@ find ~/ -name *. log
 
 find ~/ -user ubuntu (find ubuntu user anything which has the created by ubuntu)
 find ~/ -group devops
-df -h (disk space usage) free (memory uses) uptime (system uptime and load) who w ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6 echo -e "\e[1;32mDone. \e[Om" ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6
+
+df -h (disk space usage) 
+free (memory uses) 
+uptime (system uptime and load) 
+who 
+w 
+ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6 echo -e "\e[1;32mDone. \e[Om" ps -eo %mem, %cpu,comm --sort=-%mem | head -n 6
 
 ps
 ps कमांड सिस्टम में चल रही processes की जानकारी दिखाती है।
