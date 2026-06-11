@@ -1,3 +1,8 @@
+
+hostname -i  (ip address will get 
+curl ifconfig.me
+ifconfig
+w (logged in user and activity )
 linux command 
 mkdir vip  # folder create
  cd vip/
