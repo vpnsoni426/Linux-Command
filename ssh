@@ -1,0 +1,81 @@
+target 1
+ 1  apt update
+   apt install openssh-client openssh-server -y
+    2  ssh-keygen
+    3  cd /root/.ssh/
+
+  4 ls -a
+ 
+   5cat /root/.ssh/id_ed25519.pub or
+
+  6 cat id_ed25519.pub
+   (ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA+5CcB+W6TXaUbgj/jKh0zonUS17Xs7kdUdtiiVq4Je root@ip-172-31-44-78) this is public key copy this key
+
+
+  
+7 cat > myfile.txt << EOF Hello World
+This is my first file.
+Welcome to Linux.
+EOF
+
+8  cat myfile.txt
+9 ssh root@172.31.34.76 or ssh ubuntu@ip
+10 scp myfile.txt  root@172.31.34.76:/root/ (copy file from source to destination)
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+
+target -2
+1  apt update
+    2  apt install openssh-client openssh-server -y
+    3  
+    4  cd /root/ssh/
+    5  cd /etc/ssh/
+    6  ls -l
+    7  vi sshd_config
+
+systemctl enable ssh
+systemctl start ssh
+ss -tlnp | grep :22
+
+
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/authorized_keys
+
+
+    8  service ssh status
+    9  service ssh start
+ 
+   11  passwd root set the password
+   12  
+   16  hostname -i (get ip)
+   17  
+   18  ifconfig
+   19  cd /root
+   20 
+   22  
+   23  chmod 700 ~/.ssh
+   24  nano ~/.ssh/authorized_keys
+   25  systemctl status ssh
+   26 
+   27  ss -tlnp | grep :22
+   28 
+   29  cd /root/.ssh
+   30  ls -l
+If /root/.ssh/authorized_keys already exists on Target 2, then open that file and add Target 1's public key as a new line.
+
+target 2
+cd /root/.ssh
+
+root@ip-172-31-34-76:~/.ssh# vi authorized_keys
+
+add key 
+ssh-rsa AAAAB3NzaC1... existing-key-1
+ssh-ed25519 AAAAC3NzaC1... existing-key-2
+
+Add Target 1's public key on a new line:
+
+ssh-rsa AAAAB3NzaC1... existing-key-1
+ssh-ed25519 AAAAC3NzaC1... existing-key-2
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... target1-key
