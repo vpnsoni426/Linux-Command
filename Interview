@@ -1,0 +1,829 @@
+5 Years DevOps Engineer ke liye commands ko category-wise yaad rakhna chahiye. Interview me aksar poocha jata hai: "Aap daily Linux me kaun-kaun si commands use karte ho?"
+1. File & Directory Commands
+Bash
+pwd
+ls
+ls -ltr
+ls -lah
+cd
+mkdir
+rmdir
+touch
+cp
+mv
+rm
+rm -rf
+tree
+stat
+file
+Example:
+Bash
+stat test.txt
+File ka size, permission, inode, timestamp sab dikhata hai.
+2. Search Commands
+Bash
+find
+locate
+which
+whereis
+Examples:
+Bash
+find / -name "*.log"
+
+find / -type f -size +100M
+
+which java
+
+whereis nginx
+3. Text Processing Commands
+Bash
+grep
+egrep
+awk
+sed
+cut
+sort
+uniq
+wc
+tr
+paste
+Examples:
+Bash
+grep ERROR app.log
+
+grep -i failed app.log
+
+awk '{print $1}' file
+
+cut -d: -f1 /etc/passwd
+
+sort file.txt
+
+uniq file.txt
+
+wc -l file.txt
+4. Process Commands
+Bash
+ps
+top
+htop
+pgrep
+pidof
+kill
+killall
+pkill
+nice
+renice
+Examples:
+Bash
+ps -ef
+
+pgrep nginx
+
+pidof java
+
+kill -9 PID
+5. Memory Commands
+Bash
+free -h
+vmstat
+sar
+top
+htop
+Memory details:
+Bash
+cat /proc/meminfo
+6. CPU Commands
+Bash
+top
+htop
+mpstat
+lscpu
+sar -u
+vmstat
+CPU Information:
+Bash
+lscpu
+nproc
+7. Disk Commands
+Bash
+df -h
+du -sh
+lsblk
+blkid
+fdisk -l
+mount
+umount
+Examples:
+Bash
+lsblk
+
+blkid
+
+df -h
+
+du -sh /var/*
+8. Network Commands
+Bash
+ip
+ifconfig
+ss
+netstat
+ping
+traceroute
+mtr
+arp
+Examples:
+Bash
+ip a
+
+ip route
+
+ss -tulpn
+
+netstat -tulpn
+9. DNS Commands
+Bash
+nslookup
+dig
+host
+Examples:
+Bash
+nslookup google.com
+
+dig google.com
+
+host google.com
+10. Port Troubleshooting
+Bash
+ss -tulpn
+
+netstat -tulpn
+
+lsof -i
+
+fuser
+Examples:
+Bash
+lsof -i :8080
+
+fuser 8080/tcp
+11. Service Commands
+Bash
+systemctl
+service
+journalctl
+Examples:
+Bash
+systemctl status nginx
+
+systemctl restart nginx
+
+journalctl -xe
+
+journalctl -u nginx
+12. User Management
+Bash
+useradd
+usermod
+userdel
+passwd
+id
+groups
+su
+sudo
+Examples:
+Bash
+useradd devops
+
+passwd devops
+
+id devops
+
+groups devops
+13. Permission Commands
+Bash
+chmod
+chown
+chgrp
+umask
+Examples:
+Bash
+chmod 755 file.sh
+
+chown ubuntu:ubuntu file
+
+umask
+14. Package Management (Ubuntu)
+Bash
+apt update
+apt upgrade
+apt install
+apt remove
+dpkg
+Examples:
+Bash
+apt update
+
+apt install nginx
+
+dpkg -l
+15. Log Commands
+Bash
+tail
+head
+less
+more
+cat
+tac
+journalctl
+Examples:
+Bash
+tail -f app.log
+
+tail -100 app.log
+
+grep ERROR app.log
+16. Compression Commands
+Bash
+tar
+gzip
+gunzip
+zip
+unzip
+Examples:
+Bash
+tar -cvf backup.tar data/
+
+tar -xvf backup.tar
+
+gzip file.txt
+17. SSH Commands
+Bash
+ssh
+scp
+sftp
+rsync
+Examples:
+Bash
+ssh user@server
+
+scp file.txt user@server:/tmp
+
+rsync -avz source/ dest/
+18. Scheduling Commands
+Bash
+crontab
+at
+Examples:
+Bash
+crontab -l
+
+crontab -e
+19. Kernel Commands
+Bash
+uname -a
+
+sysctl
+
+dmesg
+Examples:
+Bash
+uname -r
+
+sysctl -a
+
+dmesg | tail
+20. Important DevOps Troubleshooting Commands
+Open Files
+Bash
+lsof
+Socket Statistics
+Bash
+ss -tulpn
+Real-Time Monitoring
+Bash
+watch df -h
+
+watch free -h
+TCP Dump
+Bash
+tcpdump -i eth0
+Specific Port:
+Bash
+tcpdump -i eth0 port 443
+Network Connections
+Bash
+ss -ant
+
+netstat -ant
+Established Connections
+Bash
+ss -ant | grep ESTAB
+Commands Jo Interview Me Impress Karte Hain
+Bash
+lsof
+strace
+tcpdump
+sar
+vmstat
+iostat
+mpstat
+watch
+xargs
+awk
+sed
+find
+rsync
+journalctl
+Example: Java Process Kis File Ko Access Kar Raha Hai
+Bash
+strace -p PID
+Example: Port 8080 Par Traffic Aa Raha Hai Ya Nahi
+Bash
+tcpdump -i any port 8080
+Example: Deleted File Space Kha Rahi Hai
+Bash
+lsof | grep deleted
+Ye advanced commands (especially lsof, tcpdump, strace, iostat, vmstat, sar, journalctl) 5+ years DevOps/Linux admin interviews me bahut frequently poochhe jaate hain, kyunki ye real production troubleshooting me use hote hain.
+
+5 Years Experience DevOps Engineer ke interview me sirf command batana kaafi nahi hota. Interviewer dekhna chahta hai ki issue aane par aap kaunsi command kis order me chalate ho aur kyu chalate ho.
+Scenario 1: Server Slow Hai
+Step 1: Load Check
+Bash
+uptime
+Output:
+Bash
+load average: 15.2 12.5 10.3
+Agar server 4 CPU ka hai aur load 15 hai to system overloaded hai.
+Step 2: CPU Check
+Bash
+top
+Ya
+Bash
+ps -eo pid,ppid,%cpu,%mem,cmd --sort=-%cpu | head
+Dekhenge kaunsa process CPU kha raha hai.
+Step 3: Memory Check
+Bash
+free -h
+Bash
+vmstat 1 5
+Swap use ho rahi hai ya nahi.
+Step 4: Disk I/O Check
+Bash
+iostat -x 1 5
+Agar %util 90-100% hai to disk bottleneck hai.
+Scenario 2: Website Open Nahi Ho Rahi
+Step 1 DNS
+Bash
+nslookup google.com
+Ya
+Bash
+dig google.com
+Step 2 Connectivity
+Bash
+ping google.com
+Step 3 Port Reachability
+Bash
+nc -zv google.com 443
+Ya
+Bash
+telnet google.com 443
+Step 4 HTTP Response
+Bash
+curl -I https://google.com
+Step 5 Service Status
+Bash
+systemctl status nginx
+Step 6 Logs
+Bash
+journalctl -u nginx
+Scenario 3: Disk Full
+Check Filesystem
+Bash
+df -h
+Output:
+Bash
+/ 100%
+Find Large Directory
+Bash
+du -sh /* 2>/dev/null
+Find Large Files
+Bash
+find / -type f -size +500M
+Deleted But Open Files
+Bahut important interview question
+Bash
+lsof | grep deleted
+Kai baar file delete ho jati hai par process use hold karta rehta hai.
+Scenario 4: Application Down
+Process Check
+Bash
+ps -ef | grep java
+Port Check
+Bash
+ss -tulpn | grep 8080
+Application Response
+Bash
+curl localhost:8080
+Logs
+Bash
+tail -100 catalina.out
+Ya
+Bash
+tail -100 server.log
+Scenario 5: Memory Leak
+Memory Check
+Bash
+free -h
+Top Memory Process
+Bash
+ps -eo pid,%mem,cmd --sort=-%mem | head
+Java Application
+Bash
+jstat -gc <pid>
+Bash
+jmap -heap <pid>
+Scenario 6: Port Already In Use
+Error:
+Bash
+Address already in use
+Check
+Bash
+ss -tulpn | grep 8080
+Ya
+Bash
+lsof -i :8080
+Kill
+Bash
+kill -9 PID
+Scenario 7: User Sudo Nahi Chala Pa Raha
+Check:
+Bash
+id username
+Output me sudo group hona chahiye.
+Add:
+Bash
+sudo usermod -aG sudo username
+Verify:
+Bash
+groups username
+Scenario 8: Service Automatically Start Karna
+Current Status:
+Bash
+systemctl status nginx
+Enable:
+Bash
+systemctl enable nginx
+Verify:
+Bash
+systemctl is-enabled nginx
+Scenario 9: Network Troubleshooting
+IP Check
+Bash
+ip addr
+Gateway Check
+Bash
+ip route
+DNS Check
+Bash
+cat /etc/resolv.conf
+Connectivity
+Bash
+ping 8.8.8.8
+DNS Test
+Bash
+ping google.com
+Agar IP ping ho raha hai aur hostname nahi, to DNS issue hai.
+Scenario 10: Log Analysis (Most Asked)
+Real-time Logs:
+Bash
+tail -f /var/log/syslog
+Last 100 Lines:
+Bash
+tail -100 app.log
+Search Error:
+Bash
+grep -i error app.log
+top
+htop
+uptime
+free -h
+vmstat
+iostat
+sar
+
+df -h
+du -sh
+find
+
+ps -ef
+kill
+pkill
+
+systemctl
+journalctl
+
+ss
+netstat
+lsof
+
+ip addr
+ip route
+ping
+traceroute
+
+nslookup
+dig
+
+curl
+wget
+
+grep
+awk
+sed
+sort
+uniq
+cut
+
+ssh
+scp
+rsync
+
+crontab
+tar
+gzip
+Search Exception:
+Bash
+grep -i exception app.log
+Commands Jo 5+ Years DevOps Engineer Ko Ratne Chahiye
+Bash
+Interview me agar interviewer bole:
+"Website nahi chal rahi, troubleshoot karo"
+To aapka flow hona chahiye:
+DNS → Ping → Port → Service → Logs → Firewall → Application
+Aur agar bole:
+"Server slow hai"
+To flow hona chahiye:
+Load → CPU → Memory → Disk I/O → Network → Logs
+Ye structured approach hi 5 years experienced DevOps engineer ko fresher se alag dikhati hai.
+
+Agar aap 5 years experienced DevOps Engineer ke interview ki preparation kar rahe hain, to Linux/Ubuntu se related questions basic commands se aage jaakar troubleshooting, performance, networking aur administration par focus karte hain.
+Linux/Ubuntu Interview Questions (5 Years DevOps)
+1. Linux Boot Process Explain?
+Answer:
+BIOS/UEFI
+GRUB Bootloader
+Kernel Load
+Initramfs
+systemd (PID 1)
+Services Start
+Login Prompt
+2. systemd Kya Hai?
+System aur services manage karta hai.
+Commands:
+Bash
+systemctl status nginx
+systemctl start nginx
+systemctl stop nginx
+systemctl restart nginx
+systemctl enable nginx
+3. Top 5 Memory Consuming Processes Kaise Dekhenge?
+Bash
+ps -eo pid,ppid,%mem,%cpu,cmd --sort=-%mem | head -6
+4. CPU Utilization Check Karne Ke Commands?
+Bash
+top
+htop
+mpstat
+sar -u 1 5
+vmstat 1
+5. Memory Usage Check?
+Bash
+free -h
+cat /proc/meminfo
+vmstat
+top
+6. Disk Usage Check?
+Bash
+df -h
+du -sh *
+du -sh /var/log/*
+7. Disk Full Ho Gayi Hai. Kya Karenge?
+Step 1
+Bash
+df -h
+Step 2
+Bash
+du -sh /* 2>/dev/null
+Step 3
+Bash
+find / -type f -size +500M
+Step 4
+Logs clean
+Bash
+journalctl --vacuum-time=7d
+8. Server Slow Hai. Troubleshoot Kaise Karoge?
+CPU
+Bash
+top
+mpstat
+Memory
+Bash
+free -h
+vmstat
+Disk
+Bash
+iostat
+Network
+Bash
+sar -n DEV
+Process
+Bash
+ps aux --sort=-%cpu
+9. Zombie Process Kya Hai?
+Process terminate ho chuka hai but entry process table me hai.
+Check:
+Bash
+ps -el | grep Z
+10. Load Average Kya Hota Hai?
+Bash
+uptime
+Output:
+Bash
+load average: 1.2 0.8 0.6
+1 min, 5 min, 15 min load.
+11. Soft Link Aur Hard Link Difference?
+Soft Link
+Bash
+ln -s file1 file2
+Different filesystem me possible
+Original delete ho gaya to link break
+Hard Link
+Bash
+ln file1 file2
+Same inode
+Same filesystem
+12. Process Kill Kaise Karoge?
+Bash
+kill PID
+kill -9 PID
+pkill nginx
+killall java
+13. Port Kis Process Ne Occupy Kiya Hai?
+Bash
+netstat -tulpn
+Ya
+Bash
+ss -tulpn
+Ya
+Bash
+lsof -i :8080
+14. Service Down Hai. Troubleshoot?
+Check Service
+Bash
+systemctl status nginx
+Logs
+Bash
+journalctl -u nginx
+Port
+Bash
+ss -tulpn
+Firewall
+Bash
+ufw status
+15. DNS Resolve Ho Raha Hai Ya Nahi?
+Bash
+nslookup google.com
+dig google.com
+host google.com
+16. Website Open Nahi Ho Rahi. Kaise Check Karoge?
+DNS
+Bash
+nslookup website.com
+Connectivity
+Bash
+ping website.com
+Port
+Bash
+telnet website.com 443
+Ya
+Bash
+nc -zv website.com 443
+HTTP Response
+Bash
+curl -I https://website.com
+17. Routing Table Kaise Dekhenge?
+Bash
+ip route
+route -n
+18. Network Interface Details?
+Bash
+ip addr
+ip link
+ifconfig
+19. File Permissions Explain
+Bash
+-rwxr-xr--
+Owner = rwx = 7
+Group = r-x = 5
+Others = r-- = 4
+Bash
+chmod 754 file.txt
+20. chmod 777 Kya Hota Hai?
+Bash
+chmod 777 file
+Owner, Group, Others sabko rwx permission.
+Security risk.
+21. chown Aur chmod Difference?
+Permission Change
+Bash
+chmod 755 file
+Ownership Change
+Bash
+chown ubuntu:devops file
+22. Cron Job Kya Hai?
+Bash
+crontab -e
+Example:
+Bash
+0 2 * * * /backup.sh
+Daily 2 AM.
+23. Log Files Kahan Hoti Hain?
+Bash
+/var/log/
+Important:
+Bash
+/var/log/syslog
+/var/log/auth.log
+/var/log/messages
+24. 100 Lines Real-Time Log Kaise Dekhen?
+Bash
+tail -f /var/log/syslog
+Bash
+tail -100 file.log
+25. JBoss/Tomcat Down Hai. Kya Check Karoge?
+Process
+Bash
+ps -ef | grep java
+Port
+Bash
+ss -tulpn
+Logs
+Bash
+catalina.out
+server.log
+Memory
+Bash
+free -h
+Disk
+Bash
+df -h
+26. Interview Scenario
+Question: Application 8080 port par chal rahi hai lekin browser se access nahi ho rahi. Kya check karoge?
+Answer:
+Bash
+ss -tulpn | grep 8080
+Bash
+curl localhost:8080
+Bash
+ufw status
+Bash
+iptables -L
+Bash
+journalctl -xe
+Bash
+ip addr
+Fir load balancer/security group/firewall check karunga.
+27. DevOps Engineer Ke Liye Must Know Linux Commands
+Bash
+top
+htop
+free -h
+df -h
+du -sh
+ps -ef
+grep
+awk
+sed
+find
+xargs
+sort
+uniq
+cut
+tail
+head
+less
+curl
+wget
+scp
+rsync
+ssh
+netstat
+ss
+lsof
+tcpdump
+journalctl
+systemctl
+crontab
+Ye questions 5+ years DevOps interview me bahut frequently pooche jaate hain, especially jab project-based troubleshooting round hota hai.
