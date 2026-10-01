@@ -257,3 +257,32 @@ Windows Task Scheduler se AWS CLI command schedule kar sakte ho:
 aws s3 sync s3://my-company-ec2-backups/ec2-a/ D:\AWS-Backups\
 
 sync useful hai kyunki har baar unnecessarily same files ko download nahi karta.
+
+Lekin 500 GB ke case mein ek important improvement
+
+Agar aap poori EC2 machine ka backup chahte hain, to main / ko tar.gz karke S3 mein bhejne ka approach nahi lunga.
+
+Better:
+
+EC2
+ │
+ ├── EBS Snapshot
+ │       ↓
+ │   AWS recovery
+ │
+ └── Application/Data backup
+         ↓
+        S3
+         ↓
+  Windows Server
+
+Isse:
+
+    OS/system recovery → EBS Snapshot/AMI
+
+    Database recovery → database backup
+
+    Application/files recovery → S3 backup
+
+    Off-site/on-prem copy → Windows Server
+
