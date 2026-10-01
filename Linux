@@ -22,7 +22,9 @@ touch file{3..15}.txt (that means you have created file from file3.txt to file 1
 sudo (super user do)
 sudo useradd devops
 sudo useradd -m devops (means usercreate with folder )
-
+or 
+sudo adduser john
+usermod -aG docker $ User
 sudo passwd devops
  cd /home
 ls (output devops ubuntu)
