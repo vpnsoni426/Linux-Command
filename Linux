@@ -1,4 +1,31 @@
+suppose i have aws instance ec2-A and ec2-B i wnat to copy file from ec2-A to ec2-B 
 
+scp -i /path/to/my-key.pem /home/ubuntu/test.txt ubuntu@3.110.x.x:/home/ubuntu/
+The most common way is scp over SSH.
+
+Suppose:
+
+    EC2-A = source server
+
+    EC2-B = destination server
+
+    File on EC2-A = /home/ubuntu/test.txt
+
+    EC2-B public IP = 3.110.x.x
+
+    SSH key for EC2-B = my-key.pem
+
+scp -i ~/my-key.pem /home/ubuntu/test.txt ubuntu@3.110.20.30:/home/ubuntu/
+#test.txt woh file hai jo aap EC2-A se EC2-B par copy karna chahte ho.
+
+Example:
+
+Agar EC2-A par ye file hai: /home/ubuntu/myfile.txt
+scp -i ~/my-pem.pem /home/ubuntu/myfile.txt ubuntu@3.110.20.30:/home/ubuntu/
+
+---------------------------------------------------------------------------------------
+
+ 
 hostname -i  (ip address will get 
 curl ifconfig.me
 ifconfig
