@@ -1,0 +1,259 @@
+pem file nahi hai iska matlab ye nahi ki file transfer impossible hai.
+
+.pem sirf SSH authentication ka ek method hai.
+
+Agar EC2-A se EC2-B par file bhejni hai:
+scp /home/ubuntu/test.txt ubuntu@EC2-B-IP:/home/ubuntu/
+Possible methods:
+
+    SSH key authentication — .pem ke alawa koi private key bhi configured ho sakti hai.
+
+    Password authentication — agar EC2-B par SSH password login enabled hai.
+
+    AWS Systems Manager (SSM) — appropriate IAM/SSM setup ke saath.
+
+    S3 — file ko S3 mein upload karke EC2-B se download kar sakte ho.
+--------------------------------------------------------------------------------------
+transfer file aws ec2 to local server / my local windows server
+. Agar aapko AWS Ubuntu EC2 machine ka backup Windows Server (local/on-premises) par bhejna hai, 
+to approach backup ke size aur type par depend karegi
+
+/home/ubuntu/backup.tar.gz
+
+Aur Windows Server ka IP: 192.168.1.100
+EC2 Ubuntu                         Windows Server
+/home/ubuntu/backup.tar.gz  --->   D:\AWS-Backups\
+
+Agar .pem Windows Server par nahi hai
+Tab direct scp nahi chalega jab tak EC2 par koi alternative SSH authentication configured nahi hai.
+AWS EC2 Ubuntu
+       |
+       | backup
+       ↓
+   S3 Bucket
+       |
+       | download
+       ↓
+Windows Server (Local)
+ 
+ec2 --> aws s3 cp /home/ubuntu/backup.tar.gz s3://my-backup-bucket/
+
+aws cli configure hona chahiye - windows server par 
+windows server : aws s3 cp s3://my-backup-bucket/backup.tar.gz "D:\AWS-Backups\"
+Agar aapko poori Ubuntu EC2 machine ka backup chahiye
+
+To backup.tar.gz copy karna aur EC2 machine ka complete backup alag cheezein hain.
+
+Complete EC2 backup ke liye AWS mein EBS snapshots / AMI use karna generally appropriate hota hai. 
+Agar goal hai ki AWS EC2 fail ho jaye to local Windows Server se data/backup restore kar saken, 
+to backup strategy thodi different design karni chahiye.
+------------------------------------------------------------------------------------------------------------------
+500 GB mein network interruption, resume, storage aur backup consistency important ho jati hai.
+500 GB ke liye scp se better rsync over SSH ho sakta hai, kyunki interrupted transfer ko efficiently resume kiya ja sakta hai. 
+Windows side par suitable rsync implementation chahiye.
+
+EC2
+ │
+ ├── EBS Snapshot / AMI  → AWS-side recovery
+ │
+ └── Application/Data backup → S3
+                                  │
+                                  ▼
+                           Windows Server 
+
+2. S3 bucket create karo
+
+AWS Console → S3 → Create bucket
+
+Example: 
+my-company-ec2-backups
+
+Bucket ko public mat karo.
+
+Recommended:
+
+    Block Public Access: ON
+
+    Versioning: requirement ke according
+
+    Encryption: SSE-S3 ya SSE-KMS
+
+    Bucket region: EC2 ke same region mein rakhna convenient hota hai
+
+3. EC2 ko IAM Role do
+
+EC2 Ubuntu ko S3 access chahiye.
+
+IAM mein role banao:
+
+EC2BackupRole
+
+Aur usko S3 par minimum required permissions do.
+
+Example policy:
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::my-company-ec2-backups",
+        "arn:aws:s3:::my-company-ec2-backups/*"
+      ]
+    }
+  ]
+}
+
+Phir EC2 instance ke saath ye IAM role attach kar do.
+
+Important: EC2 ke andar AWS access key/secret key hard-code karne ki zarurat nahi hai.
+IAM Instance Role use karna better hai.
+4. Ubuntu par AWS CLI check karo
+
+aws --version
+
+Agar installed nahi hai:
+
+sudo apt update
+sudo apt install awscli -y
+
+Check karo:
+
+aws sts get-caller-identity
+
+Agar IAM role correctly attached hai to AWS account/role information show hogi.
+5. 500 GB data ka backup banao
+
+Example maan lo actual data:
+
+/var/www
+
+Aap archive bana sakte ho:
+
+sudo tar -czf /backup/website-backup.tar.gz /var/www
+
+Lekin 500 GB ke liye blindly ek huge .tar.gz banana ideal nahi hai.
+
+Better approach application/database ke according backup karna hai.
+
+For example MySQL hai to pehle database dump:
+
+mysqldump -u root -p mydatabase > /backup/mydatabase.sql
+
+Aur application files separately backup karo.
+6. S3 mein upload
+
+Example:
+
+aws s3 cp /backup/website-backup.tar.gz \
+s3://my-company-ec2-backups/ec2-a/
+
+Large file ke case mein AWS CLI multipart upload use kar sakta hai.
+
+Upload verify:
+
+aws s3 ls s3://my-company-ec2-backups/ec2-a/
+
+7. Windows Server par AWS CLI install karo
+
+Windows Server par AWS CLI install karke:
+
+aws --version
+
+Phir authenticate karna hoga.
+
+Agar Windows Server AWS ke bahar/on-premises hai, to IAM credentials ko securely configure karna padega.
+
+For example:
+
+aws configure
+
+Ye maangega:
+
+AWS Access Key ID
+AWS Secret Access Key
+Default region
+Output format
+
+Access keys ko script mein directly hard-code mat karo.
+
+Agar aapke environment mein AWS IAM Identity Center, federation, ya koi centralized credential mechanism available hai, woh preferable ho sakta hai.
+8. S3 se Windows Server par download
+
+Suppose Windows Server par destination:
+
+D:\AWS-Backups
+
+Command:
+
+aws s3 cp s3://my-company-ec2-backups/ec2-a/ D:\AWS-Backups\ --recursive
+
+500 GB data download hoga.
+
+Check:
+
+dir D:\AWS-Backups
+
+9. Daily automatic backup
+
+Ubuntu par script bana sakte ho:
+
+sudo nano /usr/local/bin/ec2-backup.sh
+
+Example:
+
+#!/bin/bash
+
+DATE=$(date +%Y-%m-%d)
+BACKUP_DIR="/backup"
+S3_BUCKET="s3://my-company-ec2-backups/ec2-a"
+
+tar -czf "$BACKUP_DIR/backup-$DATE.tar.gz" /var/www
+
+aws s3 cp "$BACKUP_DIR/backup-$DATE.tar.gz" \
+"$S3_BUCKET/"
+
+rm -f "$BACKUP_DIR/backup-$DATE.tar.gz"
+
+Permission:
+
+sudo chmod +x /usr/local/bin/ec2-backup.sh
+
+Test:
+
+sudo /usr/local/bin/ec2-backup.sh
+
+10. Cron se daily run
+
+Cron open karo:
+
+sudo crontab -e
+
+Daily 2 AM:
+
+0 2 * * * /usr/local/bin/ec2-backup.sh >> /var/log/ec2-backup.log 2>&1
+
+Ab backup automatically daily chalega.
+11. Retention
+
+Maan lo aapko 30 days ka backup rakhna hai.
+
+S3 Lifecycle Rule bana sakte ho:
+
+0–30 days      → S3 Standard
+30–90 days     → S3 Standard-IA
+90+ days       → Glacier / delete according to policy
+
+500 GB ke environment mein lifecycle policies se storage cost control ki ja sakti hai.
+12. Windows Server par daily download
+
+Windows Task Scheduler se AWS CLI command schedule kar sakte ho:
+
+aws s3 sync s3://my-company-ec2-backups/ec2-a/ D:\AWS-Backups\
+
+sync useful hai kyunki har baar unnecessarily same files ko download nahi karta.
