@@ -23,8 +23,8 @@ sudo (super user do)
 sudo useradd devops
 sudo useradd -m devops (means usercreate with folder )
 or 
-sudo adduser john
-usermod -aG docker $ User
+sudo adduser john ( it will ask all detail of the user)
+usermod -aG docker $ User ( current logged-in user ko docker group me add karna. )
 sudo passwd devops
  cd /home
 ls (output devops ubuntu)
