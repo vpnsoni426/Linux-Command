@@ -1,0 +1,73 @@
+Mount point directory बनाएं -->    sudo mkdir -p /mnt/mydisk  (-p in mkdir -p means “parents”.)
+ 
+Disk/partition का नाम पता करें
+
+lsblk
+
+उदाहरण:
+
+NAME   SIZE TYPE MOUNTPOINT
+sda    100G disk
+├─sda1  50G part /
+└─sda2  50G part
+
+यहाँ /dev/sda2 को mount करना हो तो:
+3. Partition mount करें
+
+sudo mount /dev/sda2 /mnt/mydisk
+
+4. Verify करें
+
+df -h
+
+या:
+
+lsblk
+
+आपको /dev/sda2 के सामने /mnt/mydisk दिखना चाहिए।
+5. Reboot के बाद भी automatically mount करना हो
+
+पहले UUID निकालें:
+
+sudo blkid /dev/sda2
+
+उदाहरण:
+
+UUID="abcd-1234"
+
+फिर /etc/fstab edit करें:
+
+sudo nano /etc/fstab
+
+यह line add करें:
+
+UUID=abcd-1234  /mnt/mydisk  ext4  defaults  0  2
+
+फिर बिना reboot किए test करें:
+
+sudo mount -a
+
+अगर कोई error नहीं आया, तो configuration सही है।
+
+ध्यान दें: ext4 की जगह आपके partition का actual filesystem (xfs, ntfs, आदि) होना चाहिए।
+
+Linux में /dev का मतलब है device files का directory.
+
+जब आप लिखते हैं:
+
+sudo mount /dev/sda2 /mnt/mydisk
+
+तो इसका मतलब है:
+
+    /dev → Linux के devices यहाँ represent होते हैं
+
+    sda → पहला SATA/SCSI-type disk
+
+    2 → उस disk का दूसरा partition
+
+    /mnt/mydisk → जहाँ उस partition को access करना है, यानी mount point
+
+उदाहरण:
+
+/dev/sda
+   ├── /dev/sda1   → Partition 1
